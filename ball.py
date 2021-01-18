@@ -13,8 +13,8 @@ class Ball:
 		self._width = 5
 		self._height = 5
 		self._color = (255,255,255)
-		self._speed = 0.1
-		self._direction = [1,-1] # unit vector
+		self._speed = 4
+		self._direction = [0,-1] # unit vector
 
 
 
@@ -25,7 +25,6 @@ class Ball:
 		#print(translation, sum(t**2 for t in translation))
 
 	def draw(self):
-		print(self._speed)
 		pygame.draw.rect(self._screen, self._color, (self._x,self._y,self._width,self._height))
 
 	def colide_with_bar(self, bar):
@@ -36,11 +35,11 @@ class Ball:
 		bar_width = bar_dim[BarDim.WIDTH.value]
 		bar_height = bar_dim[BarDim.HEIGHT.value]
 		colide_hor = self._x + self._width >= bar_x and self._x <= bar_x + bar_width
-		colide_ver = self._y + self._height >= bar_y and self._y + self._height <= bar_y + bar_height
+		colide_ver = self._y + self._height >= bar_y and self._y <= bar_y
 		colide = colide_hor and colide_ver
 		#print(colide)
 		if colide:
-			self.update_direction()
+			self.calculate_direction(bar_x,bar_width)
 			
 	def colide_with_wall(self):
 		if self._x <= 0: 
@@ -55,6 +54,7 @@ class Ball:
 			self._direction[1] = -1*abs(self._direction[1])
 
 	def colide_with_block(self,block):
+		# possibly change this to vector
 		colide = False
 		if block.get_is_active():
 			block_dim = block.get_dimension()
@@ -84,6 +84,10 @@ class Ball:
 			# 	print("error colide_with_block")
 		return colide
 
-	def update_direction(self):
-		pass
+	def calculate_direction(self,bar_x,bar_width):
+		colision_point = self._x + self._width / 2
+		relative_colision_point = colision_point - bar_x
+		angle = (((relative_colision_point/bar_width)- 0.5)*2)*(math.pi/4)
+		self._direction[0] = math.sin(angle)
+		self._direction[1] = -1*math.cos(angle)
 

@@ -20,5 +20,6 @@ class Block:
 
 	def get_is_active(self):
 		return self._is_active
+		
 	def get_dimension(self):
 		return (self._x, self._y, self._width, self._height)
