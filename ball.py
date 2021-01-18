@@ -49,10 +49,6 @@ class Ball:
 		if self._y <=0:
 			self._direction[1] = abs(self._direction[1])
 
-		#TODO: replace with game over logic
-		if self._y >= self._screen.get_height():
-			self._direction[1] = -1*abs(self._direction[1])
-
 	def colide_with_block(self,block):
 		# possibly change this to vector
 		colide = False
@@ -91,3 +87,5 @@ class Ball:
 		self._direction[0] = math.sin(angle)
 		self._direction[1] = -1*math.cos(angle)
 
+	def check_game_over(self):
+		return self._y < self._screen.get_height()

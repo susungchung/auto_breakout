@@ -53,12 +53,14 @@ def main_loop(screen):
 		bar_movement(bar)
 
 		# ball movement + colision detection
-		ball.move()
-		ball.colide_with_bar(bar)
-		ball.colide_with_wall()
-		for block in blocks:
-			if ball.colide_with_block(block):
-				point += 100
+		ball.move()	
+		running = ball.check_game_over()
+		if running:
+			ball.colide_with_bar(bar)
+			ball.colide_with_wall()
+			for block in blocks:
+				if ball.colide_with_block(block):
+					point += 100
 		
 		#draw
 		bar.draw()
